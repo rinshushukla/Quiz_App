@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  #quiz {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .question {
+    margin-bottom: 10px;
+  }
+  .option {
+    margin-bottom: 5px;
+  }
+  input[type="radio"] {
+    margin-right: 5px;
+  }
+  .buttons {
+    margin-top: 20px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div id="quiz">
+  <div id="questionContainer"></div>
+  <div class="buttons">
+    <!-- <% console.log(data) %> -->
+    <button id="prevBtn" onclick="prevQuestion()" disabled>Previous</button>
+    <button id="nextBtn" onclick="nextQuestion()">Next</button>
+    <button id="submitBtn" onclick="submitQuiz()" style="display: none;">Submit</button>
+  </div>
+</div>
+
+<script>
+  const data = JSON.parse(`<%- JSON.stringify(data) %>`);
+  console.log(data)
+  let currentQuestionIndex = 0;
+
+  let correctCount = 0;
+  let wrongCount = 0;
+
+  function renderQuestion(index) {
+    const question = data.questions[index];
+    const questionContainer = document.getElementById('questionContainer');
+    questionContainer.innerHTML = `
+      <div class="question">
+        <p>${question.text}</p>
+      </div>
+      ${question.options.map((option, optionIndex) => `
+        <div class="option">
+          <input type="radio" id="option${optionIndex + 1}" name="answer" value="${option}">
+          <label for="option${optionIndex + 1}">${String.fromCharCode(65 + optionIndex)}. ${option}</label>
+        </div>
+      `).join('')}
+    `;
+
+    // Add event listeners to radio buttons
+    const radioButtons = questionContainer.querySelectorAll('input[type="radio"]');
+    radioButtons.forEach((radioButton) => {
+      radioButton.addEventListener('change', () => {
+        // Store the selected answer in the data object
+        data.questions[index].selectedAnswer = radioButton.value;
+      });
+    });
+  }
+
+  function prevQuestion() {
+    currentQuestionIndex--;
+    renderQuestion(currentQuestionIndex);
+    document.getElementById('nextBtn').disabled = false;
+    if (currentQuestionIndex === 0) {
+      document.getElementById('prevBtn').disabled = true;
+    }
+  }
+
+  function nextQuestion() {
+    // Check if any option is selected
+    const selectedOption = document.querySelector(`input[name="answer"]:checked`);
+    if (!selectedOption) {
+      alert("Please select an option before proceeding to the next question.");
+      return; // Stop execution if no option is selected
+    }
+
+    // Update counts based on selected answer
+    const selectedAnswer = selectedOption.value;
+    const currentQuestion = data.questions[currentQuestionIndex];
+    if (selectedAnswer === currentQuestion.answer) {
+      correctCount++;
+    } else {
+      wrongCount++;
+    }
+
+    // Move to the next question
+    currentQuestionIndex++;
+    renderQuestion(currentQuestionIndex);
+    
+    // Enable previous button and hide next button if needed
+    document.getElementById('prevBtn').disabled = false;
+    if (currentQuestionIndex === data.questions.length - 1) {
+      document.getElementById('nextBtn').style.display = 'none';
+      document.getElementById('submitBtn').style.display = 'block';
+    }
+  }
+
+  function submitQuiz() {
+    let correctCount = 0;
+    let wrongCount = 0;
+
+    data.questions.forEach((question) => {
+      if (question.selectedAnswer === question.answer) {
+        correctCount++;
+      } else {
+        wrongCount++;
+      }
+    });
+
+    // Store counts and selected answers in local storage
+    localStorage.setItem("correctCount", correctCount);
+    localStorage.setItem("wrongCount", wrongCount);
+    localStorage.setItem("selectedAnswers", JSON.stringify(data.questions.map(question => question.selectedAnswer)));
+    localStorage.setItem("correctAnswers", JSON.stringify(data.questions.map(question => question.answer)));
+
+    window.location.href = "/result";
+  }
+
+  renderQuestion(currentQuestionIndex);
+</script>
+
+</body>
+</html>

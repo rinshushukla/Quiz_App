@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Result Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      text-align: center;
+    }
+
+    #result-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    #result {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-top: 10px;
+      list-style: none;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+
+    .incorrect {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Quiz Result</h2>
+  <div id="result-container">
+    <div id="result"></div>
+    <a href="/" class="btn">Reattempt The Quiz</a>
+  </div>
+
+  <script>
+    // Retrieve data from local storage
+    const correctCount = localStorage.getItem("correctCount");
+    const wrongCount = localStorage.getItem("wrongCount");
+    const selectedAnswers = JSON.parse(localStorage.getItem("selectedAnswers"));
+    const correctAnswers = JSON.parse(localStorage.getItem("correctAnswers"));
+
+    // Display result
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = `
+      <p>Correct Answers: ${correctCount}</p>
+      <p>Wrong Answers: ${wrongCount}</p>
+      <h3>Selected Answers vs Correct Answers:</h3>
+      <ul>
+        ${selectedAnswers.map((selected, index) => `
+          <li>
+            Question ${index + 1}: 
+            Selected Answer: <span class="${selected === correctAnswers[index] ? 'correct' : 'incorrect'}">${selected}</span>, 
+            Correct Answer: <span class="correct">${correctAnswers[index]}</span>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+
+    // Clear local storage
+    localStorage.removeItem("correctCount");
+    localStorage.removeItem("wrongCount");
+    localStorage.removeItem("selectedAnswers");
+    localStorage.removeItem("correctAnswers");
+  </script>
+</body>
+</html>

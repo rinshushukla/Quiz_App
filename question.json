@@ -1,0 +1,74 @@
+{
+  "questions": [
+    {
+      "text": "What is Node.js?",
+      "options": [
+        "A programming language",
+        "A runtime environment for executing JavaScript code outside the browser",
+        "A database management system",
+        "A front-end framework"
+      ],
+      "answer": "A runtime environment for executing JavaScript code outside the browser"
+    },
+    {
+      "text": "Which of the following is not a core module in Node.js?",
+      "options": ["fs", "http", "mysql", "path"],
+      "answer": "mysql"
+    },
+    {
+      "text": "What is the primary use of Node.js?",
+      "options": [
+        "Building web applications",
+        "Database management",
+        "Creating mobile apps",
+        "Game development"
+      ],
+      "answer": "Building web applications"
+    },
+    {
+      "text": "Which of the following is NOT a core module in Node.js?",
+      "options": ["fs", "http", "path", "mysql"],
+      "answer": "mysql"
+    },
+    {
+      "text": "What is npm?",
+      "options": [
+        "Node.js package manager",
+        "Node.js programming language",
+        "Node.js module",
+        "Node.js framework"
+      ],
+      "answer": "Node.js package manager"
+    },
+    {
+      "text": "Which of the following is an event-driven framework in Node.js?",
+      "options": ["Express", "React", "Vue.js", "Angular"],
+      "answer": "Express"
+    },
+    {
+      "text": "What command is used to install dependencies listed in package.json?",
+      "options": ["npm run start", "npm install", "npm init", "npm test"],
+      "answer": "npm install"
+    },
+    {
+      "text": "Which module is used to create a web server in Node.js?",
+      "options": ["http", "fs", "path", "url"],
+      "answer": "http"
+    },
+    {
+      "text": "What is the default package manager for Node.js?",
+      "options": ["npm", "yarn", "bower", "grunt"],
+      "answer": "npm"
+    },
+    {
+      "text": "Which of the following is NOT a valid way to import a module in Node.js?",
+      "options": [
+        "require('./module')",
+        "import module from './module'",
+        "const module = require('./module')",
+        "import { module } from './module'"
+      ],
+      "answer": "import module from './module'"
+    }
+  ]
+}
